@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ZGRN — Enterprise Security.</title>
+  <meta name="description"
+    content="Enterprise-grade security. DevSecOps, cloud hardening, zero-trust architecture for hackers and builders." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'], mono: ['Space Mono', 'ui-monospace'] },
+          colors: { base: '#000000', panel: '#111111', neon: '#ff5000', cyan: '#e5e5e5' },
+          boxShadow: { glow: '0 0 0 1px rgba(255,80,0,.3), 0 0 24px rgba(255,80,0,.08)' }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* шумовой фон + сетка */
+    body {
+      background:
+        radial-gradient(1200px 500px at 20% -10%, rgba(255, 80, 0, .08), transparent),
+        radial-gradient(900px 400px at 90% 0%, rgba(255, 255, 255, .03), transparent),
+        #000000;
+    }
+
+    .noise::before {
+      content: "";
+      position: fixed;
+      inset: -10px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http:www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.035"/></svg>');
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* анимированная сетка на фоне */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: .15;
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, rgba(255, 80, 0, .05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 80, 0, .05) 1px, transparent 1px);
+      animation: grid-scroll 20s linear infinite;
+    }
+
+    @keyframes grid-scroll {
+      to {
+        background-position: 40px 40px;
+      }
+    }
+
+    /* улучшенный глитч для логотипа */
+    .glitch {
+      position: relative;
+      text-shadow: 0 0 12px rgba(0, 255, 168, .25);
+      animation: glitch-anim 3s infinite;
+    }
+
+    @keyframes glitch-anim {
+
+      0%,
+      90%,
+      100% {
+        transform: translate(0);
+      }
+
+      92% {
+        transform: translate(-2px, 2px);
+      }
+
+      94% {
+        transform: translate(2px, -2px);
+      }
+
+      96% {
+        transform: translate(-1px, 1px);
+      }
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .glitch::before {
+      color: #ffffff;
+      transform: translate(1px, -1px);
+      opacity: .35;
+      animation: glitch-before 2.8s infinite;
+    }
+
+    .glitch::after {
+      color: #ff5000;
+      transform: translate(-1px, 1px);
+      opacity: .25;
+      animation: glitch-after 3.2s infinite;
+    }
+
+    @keyframes glitch-before {
+
+      0%,
+      95%,
+      100% {
+        transform: translate(1px, -1px);
+        opacity: .35;
+      }
+
+      96% {
+        transform: translate(3px, -3px);
+        opacity: .6;
+      }
+
+      98% {
+        transform: translate(-2px, 2px);
+        opacity: .4;
+      }
+    }
+
+    @keyframes glitch-after {
+
+      0%,
+      93%,
+      100% {
+        transform: translate(-1px, 1px);
+        opacity: .25;
+      }
+
+      94% {
+        transform: translate(-3px, 3px);
+        opacity: .5;
+      }
+
+      97% {
+        transform: translate(2px, -2px);
+        opacity: .3;
+      }
+    }
+
+    /* кнопки с улучшенными эффектами */
+    .btn {
+      border: 1px solid rgba(255, 80, 0, .35);
+      background: linear-gradient(180deg, rgba(255, 80, 0, .06), rgba(255, 80, 0, .02));
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 80, 0, .08), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    .btn:hover {
+      box-shadow: 0 0 0 1px rgba(255, 80, 0, .5), 0 0 40px rgba(255, 80, 0, .12);
+      transform: translateY(-2px);
+      border-color: rgba(255, 80, 0, .6);
+    }
+
+    /* анимированная граница для карточек */
+    .animated-border {
+      background: linear-gradient(#000000, #000000) padding-box,
+        linear-gradient(90deg, rgba(0, 255, 168, .3), rgba(107, 231, 255, .3), rgba(0, 255, 168, .3)) border-box;
+      border: 1px solid transparent;
+      animation: border-rotate 3s linear infinite;
+      background-size: 200% 100%;
+    }
+
+    @keyframes border-rotate {
+      to {
+        background-position: -200% 0;
+      }
+    }
+
+    /* fade-in анимации */
+    .fade-in {
+      animation: fadeIn 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .delay-100 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-200 {
+      animation-delay: 0.2s;
+    }
+
+    .delay-300 {
+      animation-delay: 0.3s;
+    }
+
+    .delay-400 {
+      animation-delay: 0.4s;
+    }
+
+    .delay-500 {
+      animation-delay: 0.5s;
+    }
+
+    /* мигающий курсор */
+    .cursor-blink::after {
+      content: "▮";
+      animation: blink 1s step-end infinite;
+      color: #ff5000;
+      margin-left: 4px;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* focus ring */
+    .f-ring:focus-visible {
+      outline: 2px solid #ff5000;
+      outline-offset: 3px;
+    }
+
+    /* scanline эффект */
+    .scanline {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(0deg,
+          transparent 0%,
+          rgba(255, 80, 0, .02) 50%,
+          transparent 100%);
+      background-size: 100% 4px;
+      animation: scan 8s linear infinite;
+      opacity: .3;
+    }
+
+    @keyframes scan {
+      0% {
+        transform: translateY(-100%);
+      }
+
+      100% {
+        transform: translateY(100vh);
+      }
+    }
+
+    .service-card {
+      border: 1px solid rgba(255, 80, 0, .25);
+      background: linear-gradient(180deg, rgba(255, 80, 0, .04), rgba(255, 80, 0, .01));
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .service-card:hover {
+      border-color: rgba(255, 80, 0, .5);
+      box-shadow: 0 0 0 1px rgba(255, 80, 0, .3), 0 0 30px rgba(255, 80, 0, .1);
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+
+<body class="min-h-full text-white noise antialiased selection:bg-neon/20">
+  <div class="grid-bg"></div>
+  <div class="scanline"></div>
+
+  <main class="relative z-10 max-w-5xl mx-auto px-6 pt-8 pb-16">
+
+    <!-- Header -->
+    <header class="flex items-center gap-3 mb-16 fade-in sticky top-0 bg-base/80 backdrop-blur-md z-50 py-4 -mx-6 px-6">
+      <div class="h-2 w-2 rounded-full bg-neon animate-pulse"></div>
+      <span class="font-mono text-sm text-zinc-400 font-bold">ZGRN</span>
+      <div class="ml-auto flex items-center gap-6 font-mono text-xs">
+        <a href="#manifest" class="text-zinc-400 hover:text-white transition-colors">Manifest</a>
+        <a href="#services" class="text-zinc-400 hover:text-neon transition-colors">Services</a>
+        <a href="#tech" class="text-zinc-400 hover:text-cyan transition-colors hidden sm:block">Tech Stack</a>
+        <a href="https://zgrn.com" class="text-zinc-500 hover:text-neon transition-colors">zgrn.com</a>
+      </div>
+    </header>
+
+
+    <!-- Hero -->
+    <section>
+      <h1 class="glitch block font-extrabold tracking-[0.22em] text-6xl sm:text-8xl fade-in-up delay-100"
+        data-text="ZGRN">
+        ZGRN
+      </h1>
+      <p class="mt-6 text-zinc-300 max-w-2xl text-lg sm:text-xl font-mono fade-in-up delay-200">
+        <span class="text-zinc-400">We harden cloud infrastructure so you can build without fear.
+          Enterprise-grade DevSecOps, zero-trust architecture, and 24/7/365 threat response for teams that scale
+          fast.</span>
+      </p>
+
+    </section>
+
+    <!-- Stats -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20 fade-in-up delay-400">
+      <div class="border-l-2 border-neon/40 pl-4">
+        <div class="font-mono text-3xl font-bold text-neon">24/7/365</div>
+        <div class="text-sm text-zinc-500 font-mono">Active Threat Hunting</div>
+      </div>
+      <div class="border-l-2 border-neon/40 pl-4">
+        <div class="font-mono text-3xl font-bold text-neon">100%</div>
+        <div class="text-sm text-zinc-500 font-mono">Infrastructure Hardening</div>
+      </div>
+      <div class="border-l-2 border-neon/40 pl-4">
+        <div class="font-mono text-3xl font-bold text-neon">Sub-5min</div>
+        <div class="text-sm text-zinc-500 font-mono">Incident Response</div>
+      </div>
+      <div class="border-l-2 border-neon/40 pl-4">
+        <div class="font-mono text-3xl font-bold text-neon">Absolute</div>
+        <div class="text-sm text-zinc-500 font-mono">Zero-Trust</div>
+      </div>
+    </section>
+
+    <div class="mt-20"></div>
+
+    <div id="manifest" class="pt-8"></div>
+    <!-- Manifest Content -->
+    <article class="prose prose-invert max-w-none">
+      <!-- Section 1 -->
+      <section class="mb-16 fade-in-up delay-300">
+        <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+          <span class="text-neon font-mono text-2xl"></span>
+          <span>01. Master the Chaos</span>
+        </h2>
+        <div class="space-y-4 text-zinc-300 leading-relaxed text-lg">
+          <p>
+            We live in an age of exponential complexity. Cloud infrastructures sprawl across continents.
+            Code ships thousands of times per day. Attack surfaces expand with every deployment.
+            The chaos is real, and it's accelerating.
+          </p>
+          <p>
+            But chaos isn't the enemy. <strong class="text-white">Uncontrolled chaos</strong> is.
+          </p>
+          <p>
+            Your product is your lifeblood. One breach can destroy years of work.
+            ZGRN exists to give you absolute control over your expanding attack surface.
+            We build invisible, unbreakable security layers that scale with your ambitions,
+            so your engineers can focus on shipping features, not fighting fires.
+          </p>
+        </div>
+      </section>
+
+
+
+      <!-- Section 3 -->
+      <section class="mb-16 fade-in-up delay-400">
+        <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+          <span class="text-neon font-mono text-2xl"></span>
+          <span>02. Our Values</span>
+        </h2>
+        <div class="space-y-6">
+          <div class="border-l-2 border-neon/40 pl-6">
+            <h3 class="text-xl font-bold text-white mb-2 font-mono ">ZERO COMPROMISES</h3>
+            <p class="text-zinc-400">
+              No shortcuts. No security theater. We implement battle-tested protocols that actually stop attacks, not
+              just pass compliance checklists.
+            </p>
+          </div>
+          <div class="border-l-2 border-cyan/40 pl-6">
+            <h3 class="text-xl font-bold text-white mb-2 font-mono ">RADICAL TRANSPARENCY</h3>
+            <p class="text-zinc-400">
+              Direct access to senior security engineers. No account managers, no bullshit. We treat you like technical
+              peers.
+            </p>
+          </div>
+          <div class="border-l-2 border-neon/40 pl-6">
+            <h3 class="text-xl font-bold text-white mb-2 font-mono ">BUILD IN PUBLIC</h3>
+            <p class="text-zinc-400">
+              Share knowledge. Document processes. Contribute to open source. A rising tide lifts all boats.
+            </p>
+          </div>
+          <div class="border-l-2 border-cyan/40 pl-6">
+            <h3 class="text-xl font-bold text-white mb-2 font-mono ">RESPECT THE CRAFT</h3>
+            <p class="text-zinc-400">
+              Whether it's code or infrastructure, we obsess over details. Quality is never an accident.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="mb-16 fade-in-up delay-400">
+        <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+          <span class="text-cyan font-mono text-2xl"></span>
+          <span>03. Who Needs Us</span>
+        </h2>
+        <div class="space-y-4 text-zinc-300 leading-relaxed text-lg">
+          <p>We build for:</p>
+          <ul class="space-y-3 font-mono text-base list-none text-zinc-300">
+            <li class="">High-growth startups scaling rapidly under attack</li>
+            <li class="">Enterprises migrating to cloud-native architectures without losing sleep</li>
+            <li class="">Engineering teams trying to implement absolute zero-trust</li>
+            <li class="">Leaders who refuse to accept "good enough" security</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 5 -->
+      <section class="mb-16 fade-in-up delay-400">
+        <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+          <span class="text-neon font-mono text-2xl"></span>
+          <span>04. Where We're Going</span>
+        </h2>
+        <div class="space-y-4 text-zinc-300 leading-relaxed text-lg">
+          <p>
+            This is just the beginning. We're building a company that will exist for decades,
+            not quarters. Our roadmap includes:
+          </p>
+          <ul class="space-y-3 font-mono text-base list-none text-zinc-300">
+            <li class="">Expanding our security services to cover emerging threats (quantum, AI, IoT)</li>
+            <li class="">Open-sourcing security tools that protect millions</li>
+            <li class="">Building a global community of builders, breakers, and creators</li>
+            <li class="">Staying independent, sustainable, and true to our values</li>
+          </ul>
+        </div>
+      </section>
+
+
+
+
+
+
+    </article>
+
+    <!-- Services -->
+    <section id="services" class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 fade-in-up">
+        <span class="text-zinc-500 font-mono text-sm"> </span>Services
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- DevSecOps -->
+        <div class="service-card rounded-2xl p-8 fade-in-up delay-100">
+          <div class="text-4xl mb-4">🔒</div>
+          <h3 class="text-2xl font-bold mb-3">DevSecOps</h3>
+          <p class="text-zinc-400 mb-4 leading-relaxed">
+            Ship faster without breaking things. We integrate automated vulnerability scanning and security gates
+            directly into your CI/CD pipelines, catching critical flaws before they hit production.
+          </p>
+          <ul class="space-y-2 text-sm text-zinc-500 font-mono">
+            <li>→ CI/CD Security Integration</li>
+            <li>→ Automated Vulnerability Scanning</li>
+            <li>→ Container Security</li>
+            <li>→ IaC Security Analysis</li>
+          </ul>
+        </div>
+
+        <!-- Cloud Security -->
+        <div class="service-card rounded-2xl p-8 fade-in-up delay-200">
+          <div class="text-4xl mb-4">☁️</div>
+          <h3 class="text-2xl font-bold mb-3">Cloud Security</h3>
+          <p class="text-zinc-400 mb-4 leading-relaxed">
+            Lock down your AWS, GCP, or Azure environments. We eliminate misconfigurations, enforce least-privilege IAM,
+            and deploy real-time monitoring to prevent lateral movement.
+          </p>
+          <ul class="space-y-2 text-sm text-zinc-500 font-mono">
+            <li>→ Multi-Cloud Hardening</li>
+            <li>→ Identity & Access Management</li>
+            <li>→ Network Security Groups</li>
+            <li>→ Encryption at Rest/Transit</li>
+          </ul>
+        </div>
+
+        <!-- Absolute Trust -->
+        <div class="service-card rounded-2xl p-8 fade-in-up delay-300">
+          <div class="text-4xl mb-4">🛡️</div>
+          <h3 class="text-2xl font-bold mb-3">Absolute Trust Architecture</h3>
+          <p class="text-zinc-400 mb-4 leading-relaxed">
+            Assume breach. We design architectures where every request is authenticated and authorized, drastically
+            reducing your blast radius if an endpoint is compromised.
+          </p>
+          <ul class="space-y-2 text-sm text-zinc-500 font-mono">
+            <li>→ Identity Verification</li>
+            <li>→ Microsegmentation</li>
+            <li>→ Least Privilege Access</li>
+            <li>→ Continuous Active Threat Hunting</li>
+          </ul>
+        </div>
+
+        <!-- AI Hardening -->
+        <div class="service-card rounded-2xl p-8 fade-in-up delay-400">
+          <div class="text-4xl mb-4">🤖</div>
+          <h3 class="text-2xl font-bold mb-3">AI Environment Hardening</h3>
+          <p class="text-zinc-400 mb-4 leading-relaxed">
+            Secure your ML pipelines, protect training data, and prevent model poisoning. AI-specific security for the
+            next generation of applications.
+          </p>
+          <ul class="space-y-2 text-sm text-zinc-500 font-mono">
+            <li>→ Model Security & Validation</li>
+            <li>→ Training Data Protection</li>
+            <li>→ API Security for ML Services</li>
+            <li>→ Adversarial Defense</li>
+          </ul>
+        </div>
+
+        <!-- Penetration Testing -->
+        <div class="service-card rounded-2xl p-8 fade-in-up delay-100">
+          <div class="text-4xl mb-4">🎯</div>
+          <h3 class="text-2xl font-bold mb-3">Penetration Testing</h3>
+          <p class="text-zinc-400 mb-4 leading-relaxed">
+            We break in before the bad guys do. Exhautive, manual penetration testing by elite hackers to expose your
+            critical vulnerabilities, complete with actionable developer-friendly fixes.
+          </p>
+          <ul class="space-y-2 text-sm text-zinc-500 font-mono">
+            <li>→ Web Application Testing</li>
+            <li>→ Network Penetration</li>
+            <li>→ API Security Testing</li>
+            <li>→ Social Engineering Simulations</li>
+          </ul>
+        </div>
+
+        <!-- Incident Response -->
+        <div class="service-card rounded-2xl p-8 fade-in-up delay-200">
+          <div class="text-4xl mb-4">🚨</div>
+          <h3 class="text-2xl font-bold mb-3">Incident Response</h3>
+          <p class="text-zinc-400 mb-4 leading-relaxed">
+            Rapid response when seconds matter. 24/7/365 security operations center with expert incident handlers ready
+            to
+            contain and remediate threats.
+          </p>
+          <ul class="space-y-2 text-sm text-zinc-500 font-mono">
+            <li>→ 24/7/365 SOC Active Threat Hunting</li>
+            <li>→ Threat Hunting</li>
+            <li>→ Incident Containment</li>
+            <li>→ Forensic Analysis</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="mb-20 fade-in-up">
+      <div class="border border-neon/30 rounded-2xl p-12 text-center bg-gradient-to-br from-neon/5 to-transparent">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-white">Stop guessing about your security posture.</h2>
+        <p class="text-zinc-400 mb-8 max-w-2xl mx-auto text-lg">
+          Talk directly to a senior security engineer. No sales pitches, just a technical teardown of how we can harden
+          your infrastructure.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="mailto:contact@zgrn.com"
+            class="px-8 py-4 bg-neon text-black hover:bg-white font-mono font-bold text-lg rounded-lg transition-colors shadow-glow flex items-center gap-2">
+            <span>INITIATE CONTACT</span>
+            <span class="font-normal text-sm opacity-80">contact@zgrn.com</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900/80 pt-8 pb-4 fade-in">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="font-bold mb-3 text-white">ZGRN</div>
+          <p class="text-xs text-zinc-500 leading-relaxed">
+            Control the chaos. Enterprise security.
+          </p>
+        </div>
+
+        <div>
+          <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Navigation</div>
+          <div class="space-y-2 text-sm">
+
+
+            <a href="#services" class="block text-zinc-400 hover:text-neon transition-colors">Services</a>
+            <a href="#manifest" class="block text-zinc-400 hover:text-white transition-colors">Manifest</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Contact</div>
+          <div class="space-y-2 text-sm">
+            <a href="mailto:contact@zgrn.com"
+              class="block text-zinc-400 hover:text-neon transition-colors">contact@zgrn.com</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Connect</div>
+          <div class="space-y-2 text-sm">
+            <a href="https:github.com/zgrnteam"
+              class="block text-zinc-400 hover:text-white transition-colors">GitHub</a>
+            <a href="https:twitter.com/zgrnteam"
+              class="block text-zinc-400 hover:text-white transition-colors">Twitter/X</a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-6 border-t border-zinc-900/50 text-xs font-mono text-zinc-500">
+        <div>© ZGRN 2025 · All rights reserved</div>
+        <div class="flex items-center gap-2">
+          <span class="text-zinc-700">📍</span>
+          <span>TAIPEI / HONG KONG</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+</body>
+
+</html>
