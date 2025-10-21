@@ -1,48 +1,374 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>zgrn.com - Under Development</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    /* Basic reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    /* Full-height container with centered content */
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
-      color: #333;
-    }
-    .container {
-      text-align: center;
-      padding: 20px;
-      border: 1px solid #ddd;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      margin-bottom: 10px;
-      font-size: 2rem;
-    }
-    p {
-      font-size: 1rem;
-      color: #666;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>zgrn.com</h1>
-    <p>This site is under development. Stay tuned for updates!</p>
-  </div>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZGRN — Control the chaos.</title>
+    <meta name="description" content="Enterprise-grade security meets street-level style. DevSecOps, cloud hardening, zero-trust architecture + cyberpunk apparel for hackers and builders." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind (CDN) — для статического GH Pages без сборки -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'], mono: ['Space Mono','ui-monospace'] },
+            colors: {
+              base: '#0a0b0c',
+              panel: '#0f1115',
+              neon: '#00ffa8',
+              cyan: '#6be7ff'
+            },
+            boxShadow: {
+              glow: '0 0 0 1px rgba(0,255,168,.3), 0 0 24px rgba(0,255,168,.08)'
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* шумовой фон + сетка */
+      body{
+        background:
+          radial-gradient(1200px 500px at 20% -10%, rgba(0,255,168,.08), transparent),
+          radial-gradient(900px 400px at 90% 0%, rgba(107,231,255,.07), transparent),
+          #050607;
+      }
+      .noise::before{
+        content:""; position:fixed; inset:-10px;
+        background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.035"/></svg>');
+        pointer-events:none; z-index:0;
+      }
+      
+      /* анимированная сетка на фоне */
+      .grid-bg{
+        position:fixed; inset:0; z-index:0; opacity:.15;
+        background-size: 40px 40px;
+        background-image: 
+          linear-gradient(to right, rgba(0,255,168,.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0,255,168,.05) 1px, transparent 1px);
+        animation: grid-scroll 20s linear infinite;
+      }
+      @keyframes grid-scroll{ to{ background-position: 40px 40px; }}
+      
+      /* улучшенный глитч для логотипа */
+      .glitch{
+        position:relative; 
+        text-shadow:0 0 12px rgba(0,255,168,.25);
+        animation: glitch-anim 3s infinite;
+      }
+      @keyframes glitch-anim{
+        0%, 90%, 100%{ transform:translate(0); }
+        92%{ transform:translate(-2px, 2px); }
+        94%{ transform:translate(2px, -2px); }
+        96%{ transform:translate(-1px, 1px); }
+      }
+      .glitch::before, .glitch::after{
+        content:attr(data-text);
+        position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen;
+      }
+      .glitch::before{ 
+        color:#6be7ff; 
+        transform:translate(1px,-1px); 
+        opacity:.35;
+        animation: glitch-before 2.8s infinite;
+      }
+      .glitch::after { 
+        color:#00ffa8; 
+        transform:translate(-1px,1px); 
+        opacity:.25;
+        animation: glitch-after 3.2s infinite;
+      }
+      @keyframes glitch-before{
+        0%, 95%, 100%{ transform:translate(1px,-1px); opacity:.35; }
+        96%{ transform:translate(3px,-3px); opacity:.6; }
+        98%{ transform:translate(-2px,2px); opacity:.4; }
+      }
+      @keyframes glitch-after{
+        0%, 93%, 100%{ transform:translate(-1px,1px); opacity:.25; }
+        94%{ transform:translate(-3px,3px); opacity:.5; }
+        97%{ transform:translate(2px,-2px); opacity:.3; }
+      }
+      
+      /* кнопки с улучшенными эффектами */
+      .btn{
+        border:1px solid rgba(0,255,168,.35);
+        background:linear-gradient(180deg, rgba(0,255,168,.06), rgba(0,255,168,.02));
+        position:relative; overflow:hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .btn::before{
+        content:""; position:absolute; inset:0;
+        background: linear-gradient(90deg, transparent, rgba(0,255,168,.08), transparent);
+        transform:translateX(-100%);
+        transition: transform 0.6s ease;
+      }
+      .btn:hover::before{ transform:translateX(100%); }
+      .btn:hover{ 
+        box-shadow:0 0 0 1px rgba(0,255,168,.5), 0 0 40px rgba(0,255,168,.12);
+        transform: translateY(-2px);
+        border-color: rgba(0,255,168,.6);
+      }
+      
+      /* анимированная граница для карточек */
+      .animated-border{
+        background: linear-gradient(#050607, #050607) padding-box,
+                    linear-gradient(90deg, rgba(0,255,168,.3), rgba(107,231,255,.3), rgba(0,255,168,.3)) border-box;
+        border: 1px solid transparent;
+        animation: border-rotate 3s linear infinite;
+        background-size: 200% 100%;
+      }
+      @keyframes border-rotate{
+        to{ background-position: -200% 0; }
+      }
+      
+      /* fade-in анимации */
+      .fade-in{
+        animation: fadeIn 0.8s ease-out forwards;
+        opacity:0;
+      }
+      .fade-in-up{
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity:0;
+      }
+      @keyframes fadeIn{
+        to{ opacity:1; }
+      }
+      @keyframes fadeInUp{
+        from{ opacity:0; transform:translateY(20px); }
+        to{ opacity:1; transform:translateY(0); }
+      }
+      .delay-100{ animation-delay:0.1s; }
+      .delay-200{ animation-delay:0.2s; }
+      .delay-300{ animation-delay:0.3s; }
+      .delay-400{ animation-delay:0.4s; }
+      .delay-500{ animation-delay:0.5s; }
+      
+      /* мигающий курсор */
+      .cursor-blink::after{
+        content:"▮";
+        animation: blink 1s step-end infinite;
+        color:#00ffa8;
+        margin-left:4px;
+      }
+      @keyframes blink{
+        50%{ opacity:0; }
+      }
+      
+      /* focus ring */
+      .f-ring:focus-visible{ outline:2px solid #00ffa8; outline-offset:3px; }
+      
+      /* scanline эффект */
+      .scanline{
+        position:fixed; inset:0; z-index:1; pointer-events:none;
+        background: linear-gradient(0deg, 
+          transparent 0%, 
+          rgba(0,255,168,.02) 50%, 
+          transparent 100%);
+        background-size: 100% 4px;
+        animation: scan 8s linear infinite;
+        opacity:.3;
+      }
+      @keyframes scan{
+        0%{ transform:translateY(-100%); }
+        100%{ transform:translateY(100vh); }
+      }
+    </style>
+  </head>
+  <body class="min-h-full text-white noise antialiased selection:bg-neon/20">
+    <!-- анимированная сетка и сканлайн -->
+    <div class="grid-bg"></div>
+    <div class="scanline"></div>
+    
+    <main class="relative z-10 max-w-5xl mx-auto px-6 pt-24 pb-16">
+      <!-- Header -->
+      <header class="flex items-center gap-3 mb-16 fade-in">
+        <div class="h-2 w-2 rounded-full bg-neon animate-pulse"></div>
+        <span class="font-mono text-sm text-zinc-400">ZGRN//CORE</span>
+        <a href="https://zgrn.com" class="ml-auto font-mono text-xs text-zinc-500 hover:text-neon transition-colors">zgrn.com</a>
+      </header>
+
+      <!-- Hero -->
+      <section>
+        <h1
+          class="glitch block font-extrabold tracking-[0.22em] text-6xl sm:text-8xl fade-in-up delay-100"
+          data-text="ZGRN"
+        >
+          ZGRN
+        </h1>
+        <p class="mt-6 text-zinc-300 max-w-2xl text-lg sm:text-xl font-mono fade-in-up delay-200">
+          <span class="cursor-blink text-white font-semibold">Control the chaos.</span> 
+          <span class="text-zinc-400">Where enterprise-grade security meets street-level style. We harden your infrastructure and sharpen your aesthetic.</span>
+        </p>
+
+        <!-- Stats bar -->
+        <div class="mt-8 grid grid-cols-3 gap-4 max-w-2xl fade-in-up delay-300">
+          <div class="border-l-2 border-neon/40 pl-3">
+            <div class="font-mono text-2xl font-bold text-neon">24/7</div>
+            <div class="text-xs text-zinc-500 font-mono">Threat Response</div>
+          </div>
+          <div class="border-l-2 border-cyan/40 pl-3">
+            <div class="font-mono text-2xl font-bold text-cyan">100%</div>
+            <div class="text-xs text-zinc-500 font-mono">Handcrafted</div>
+          </div>
+          <div class="border-l-2 border-neon/40 pl-3">
+            <div class="font-mono text-2xl font-bold text-neon">Zero</div>
+            <div class="text-xs text-zinc-500 font-mono">Compromises</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Domains -->
+      <section class="mt-16">
+        <div class="grid lg:grid-cols-2 gap-6">
+          <!-- CYBER Card -->
+          <a href="./cyber/" class="btn f-ring rounded-2xl p-8 shadow-glow block fade-in-up delay-400 group">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="font-mono text-xs text-zinc-500 uppercase tracking-wider">Domain // 01</div>
+                <div class="mt-2 text-3xl font-bold text-white">ZGRN CYBER</div>
+              </div>
+              <span class="font-mono text-3xl text-neon transition-transform group-hover:translate-x-2 group-hover:scale-110">→</span>
+            </div>
+            
+            <p class="text-zinc-400 text-sm mb-4 leading-relaxed">
+              Enterprise security that doesn't sleep. Zero-trust architecture, cloud hardening, and AI-powered threat detection for teams who build at scale.
+            </p>
+            
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-neon/10 border border-neon/30 rounded-full text-xs font-mono text-neon">DevSecOps</span>
+              <span class="px-3 py-1 bg-neon/10 border border-neon/30 rounded-full text-xs font-mono text-neon">Cloud Security</span>
+              <span class="px-3 py-1 bg-neon/10 border border-neon/30 rounded-full text-xs font-mono text-neon">Zero Trust</span>
+              <span class="px-3 py-1 bg-neon/10 border border-neon/30 rounded-full text-xs font-mono text-neon">AI Hardening</span>
+              <span class="px-3 py-1 bg-neon/10 border border-neon/30 rounded-full text-xs font-mono text-neon">Pentesting</span>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-zinc-800/50 flex items-center gap-2 text-xs font-mono text-zinc-500">
+              <span class="text-neon">⌘</span> Press <kbd class="px-2 py-0.5 bg-zinc-900/80 border border-zinc-700 rounded text-neon">C</kbd> to enter
+            </div>
+          </a>
+
+          <!-- STUDIO Card -->
+          <a href="./studio/" class="btn f-ring rounded-2xl p-8 shadow-glow block fade-in-up delay-500 group">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="font-mono text-xs text-zinc-500 uppercase tracking-wider">Domain // 02</div>
+                <div class="mt-2 text-3xl font-bold text-white">ZGRN STUDIO</div>
+              </div>
+              <span class="font-mono text-3xl text-neon transition-transform group-hover:translate-x-2 group-hover:scale-110">→</span>
+            </div>
+            
+            <p class="text-zinc-400 text-sm mb-4 leading-relaxed">
+              Cyberpunk aesthetics for the modern hacker. Street-tech apparel, limited drops, and accessories designed for those who code in the shadows.
+            </p>
+            
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-cyan/10 border border-cyan/30 rounded-full text-xs font-mono text-cyan">Apparel</span>
+              <span class="px-3 py-1 bg-cyan/10 border border-cyan/30 rounded-full text-xs font-mono text-cyan">Accessories</span>
+              <span class="px-3 py-1 bg-cyan/10 border border-cyan/30 rounded-full text-xs font-mono text-cyan">Tech Gear</span>
+              <span class="px-3 py-1 bg-cyan/10 border border-cyan/30 rounded-full text-xs font-mono text-cyan">Art Prints</span>
+              <span class="px-3 py-1 bg-cyan/10 border border-cyan/30 rounded-full text-xs font-mono text-cyan">Limited Drops</span>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-zinc-800/50 flex items-center gap-2 text-xs font-mono text-zinc-500">
+              <span class="text-neon">⌘</span> Press <kbd class="px-2 py-0.5 bg-zinc-900/80 border border-zinc-700 rounded text-neon">S</kbd> to enter
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Philosophy Section -->
+      <section class="mt-16 fade-in-up delay-400">
+        <div class="border border-zinc-800/50 rounded-2xl p-8 bg-gradient-to-br from-zinc-900/40 to-transparent">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="h-1 w-12 bg-gradient-to-r from-neon to-cyan"></div>
+            <h2 class="font-mono text-sm text-zinc-400 uppercase tracking-wider">Philosophy</h2>
+          </div>
+          
+          <h3 class="text-2xl sm:text-3xl font-bold mb-4 text-white">Two sides. Same mission.</h3>
+          
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <p class="text-zinc-400 leading-relaxed">
+                By day, we fortify cloud infrastructures and implement zero-trust architectures for enterprises who can't afford downtime. Our security protocols are battle-tested in production environments handling millions of requests.
+              </p>
+            </div>
+            <div>
+              <p class="text-zinc-400 leading-relaxed">
+                By night, we design for the builders, the breakers, the midnight coders. Our studio crafts limited-edition gear that speaks the language of terminals, hex editors, and neon-lit server rooms.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 text-sm font-mono">
+            <a href="./core/" class="text-neon hover:text-cyan transition-colors underline underline-offset-4">
+              Read the Manifest <kbd class="ml-1 px-2 py-0.5 bg-zinc-900/80 border border-zinc-700 rounded text-xs">M</kbd>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-20 border-t border-zinc-900/80 pt-8 pb-4 fade-in delay-400">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <div class="font-bold mb-3 text-white">ZGRN</div>
+            <p class="text-xs text-zinc-500 leading-relaxed">
+              Control the chaos. Enterprise security and cyberpunk design.
+            </p>
+          </div>
+          
+          <div>
+            <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Domains</div>
+            <div class="space-y-2 text-sm">
+              <a href="./cyber/" class="block text-zinc-400 hover:text-neon transition-colors">CYBER</a>
+              <a href="./studio/" class="block text-zinc-400 hover:text-cyan transition-colors">STUDIO</a>
+              <a href="./core/" class="block text-zinc-400 hover:text-white transition-colors">CORE</a>
+            </div>
+          </div>
+          
+          <div>
+            <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Contact</div>
+            <div class="space-y-2 text-sm">
+              <a href="mailto:cyber@zgrn.com" class="block text-zinc-400 hover:text-neon transition-colors">cyber@zgrn.com</a>
+              <a href="mailto:studio@zgrn.com" class="block text-zinc-400 hover:text-cyan transition-colors">studio@zgrn.com</a>
+              <a href="mailto:hello@zgrn.com" class="block text-zinc-400 hover:text-white transition-colors">hello@zgrn.com</a>
+            </div>
+          </div>
+          
+          <div>
+            <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Connect</div>
+            <div class="space-y-2 text-sm">
+              <a href="https://github.com/zgrnteam" class="block text-zinc-400 hover:text-white transition-colors">GitHub</a>
+              <a href="https://twitter.com/zgrnteam" class="block text-zinc-400 hover:text-white transition-colors">Twitter/X</a>
+              <a href="https://instagram.com/zgrnstudio" class="block text-zinc-400 hover:text-white transition-colors">Instagram</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-6 border-t border-zinc-900/50 text-xs font-mono text-zinc-500">
+          <div>© ZGRN 2025 · All rights reserved</div>
+          <div class="flex items-center gap-2">
+            <span class="text-zinc-700">📍</span>
+            <span>TAIPEI / HONG KONG</span>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- клавиатурные шорткаты: c → /cyber, s → /studio, m → /core -->
+    <script>
+      addEventListener('keydown', (e) => {
+        if (['INPUT','TEXTAREA'].includes((e.target.tagName||''))) return;
+        if (e.key.toLowerCase() === 'c') location.href = './cyber/';
+        if (e.key.toLowerCase() === 's') location.href = './studio/';
+        if (e.key.toLowerCase() === 'm') location.href = './core/';
+      });
+    </script>
+  </body>
 </html>

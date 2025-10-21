@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZGRN CORE — The Manifest</title>
+    <meta name="description" content="Our philosophy, values, and mission. Why we build, what we believe, and where we're going." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'], mono: ['Space Mono','ui-monospace'] },
+            colors: {
+              base: '#0a0b0c',
+              panel: '#0f1115',
+              neon: '#00ffa8',
+              cyan: '#6be7ff'
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body{
+        background:
+          radial-gradient(1200px 500px at 50% -10%, rgba(0,255,168,.06), transparent),
+          radial-gradient(900px 400px at 50% 100%, rgba(107,231,255,.06), transparent),
+          #050607;
+      }
+      .noise::before{
+        content:""; position:fixed; inset:-10px;
+        background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.035"/></svg>');
+        pointer-events:none; z-index:0;
+      }
+      .grid-bg{
+        position:fixed; inset:0; z-index:0; opacity:.1;
+        background-size: 40px 40px;
+        background-image: 
+          linear-gradient(to right, rgba(255,255,255,.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255,255,255,.03) 1px, transparent 1px);
+      }
+      
+      .fade-in{
+        animation: fadeIn 0.8s ease-out forwards;
+        opacity:0;
+      }
+      .fade-in-up{
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity:0;
+      }
+      @keyframes fadeIn{ to{ opacity:1; }}
+      @keyframes fadeInUp{
+        from{ opacity:0; transform:translateY(20px); }
+        to{ opacity:1; transform:translateY(0); }
+      }
+      .delay-100{ animation-delay:0.1s; }
+      .delay-200{ animation-delay:0.2s; }
+      .delay-300{ animation-delay:0.3s; }
+      .delay-400{ animation-delay:0.4s; }
+      
+      .terminal-line::before{
+        content:">";
+        color:#00ffa8;
+        margin-right:0.5rem;
+        font-weight:bold;
+      }
+    </style>
+  </head>
+  <body class="min-h-full text-white noise antialiased selection:bg-neon/20">
+    <div class="grid-bg"></div>
+    
+    <main class="relative z-10 max-w-4xl mx-auto px-6 pt-24 pb-16">
+      <!-- Header -->
+      <header class="flex items-center gap-3 mb-16 fade-in">
+        <div class="h-2 w-2 rounded-full bg-white animate-pulse"></div>
+        <span class="font-mono text-sm text-zinc-400">ZGRN//CORE</span>
+        <div class="ml-auto flex items-center gap-4">
+          <a href="../" class="font-mono text-xs text-zinc-500 hover:text-white transition-colors">← Home</a>
+          <a href="https://zgrn.com" class="font-mono text-xs text-zinc-500 hover:text-white transition-colors">zgrn.com</a>
+        </div>
+      </header>
+
+      <!-- Hero -->
+      <section class="mb-20">
+        <div class="inline-block px-3 py-1 bg-white/10 border border-white/20 rounded-full text-xs font-mono text-white mb-6 fade-in-up delay-100">
+          v1.0.0
+        </div>
+        <h1 class="text-5xl sm:text-7xl font-extrabold mb-6 fade-in-up delay-200">
+          THE MANIFEST
+        </h1>
+        <p class="text-xl text-zinc-400 max-w-2xl mb-8 font-mono fade-in-up delay-300">
+          Our principles, philosophy, and promise. Read this to understand who we are and why we exist.
+        </p>
+      </section>
+
+      <!-- Manifest Content -->
+      <article class="prose prose-invert max-w-none">
+        <!-- Section 1 -->
+        <section class="mb-16 fade-in-up delay-300">
+          <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+            <span class="text-neon font-mono text-2xl">//</span>
+            <span>01. Control the Chaos</span>
+          </h2>
+          <div class="space-y-4 text-zinc-300 leading-relaxed text-lg">
+            <p>
+              We live in an age of exponential complexity. Cloud infrastructures sprawl across continents. 
+              Code ships thousands of times per day. Attack surfaces expand with every deployment. 
+              The chaos is real, and it's accelerating.
+            </p>
+            <p>
+              But chaos isn't the enemy. <strong class="text-white">Uncontrolled chaos</strong> is.
+            </p>
+            <p>
+              ZGRN exists to help organizations and individuals master this complexity. We build security 
+              systems that scale. We design tools and apparel for those who thrive in high-entropy environments. 
+              We celebrate the builders who turn chaos into order, one commit at a time.
+            </p>
+          </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="mb-16 fade-in-up delay-400">
+          <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+            <span class="text-cyan font-mono text-2xl">//</span>
+            <span>02. Two Domains, One Mission</span>
+          </h2>
+          <div class="space-y-4 text-zinc-300 leading-relaxed text-lg">
+            <p>
+              <strong class="text-neon">ZGRN CYBER</strong> protects the infrastructure that powers the modern world. 
+              We implement zero-trust architectures, harden cloud environments, and hunt threats 24/7. 
+              Our clients range from startups to enterprises, but they all share one thing: they can't afford to fail.
+            </p>
+            <p>
+              <strong class="text-cyan">ZGRN STUDIO</strong> designs for the people behind those systems. 
+              The midnight debuggers. The security researchers. The developers who see beauty in well-crafted code. 
+              Our apparel and accessories aren't just fashion—they're identity for a digital-native generation.
+            </p>
+            <p>
+              Security and style. Infrastructure and identity. These aren't contradictions. 
+              They're two expressions of the same belief: <strong class="text-white">excellence matters</strong>.
+            </p>
+          </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="mb-16 fade-in-up delay-400">
+          <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+            <span class="text-neon font-mono text-2xl">//</span>
+            <span>03. Our Values</span>
+          </h2>
+          <div class="space-y-6">
+            <div class="border-l-2 border-neon/40 pl-6">
+              <h3 class="text-xl font-bold text-white mb-2 font-mono terminal-line">ZERO COMPROMISES</h3>
+              <p class="text-zinc-400">
+                No shortcuts in security. No compromises in quality. If we can't do it right, we don't do it.
+              </p>
+            </div>
+            <div class="border-l-2 border-cyan/40 pl-6">
+              <h3 class="text-xl font-bold text-white mb-2 font-mono terminal-line">RADICAL TRANSPARENCY</h3>
+              <p class="text-zinc-400">
+                Clear pricing. Open communication. Honest timelines. We treat clients like technical peers, not ATMs.
+              </p>
+            </div>
+            <div class="border-l-2 border-neon/40 pl-6">
+              <h3 class="text-xl font-bold text-white mb-2 font-mono terminal-line">BUILD IN PUBLIC</h3>
+              <p class="text-zinc-400">
+                Share knowledge. Document processes. Contribute to open source. A rising tide lifts all boats.
+              </p>
+            </div>
+            <div class="border-l-2 border-cyan/40 pl-6">
+              <h3 class="text-xl font-bold text-white mb-2 font-mono terminal-line">RESPECT THE CRAFT</h3>
+              <p class="text-zinc-400">
+                Whether it's code or clothing, we obsess over details. Quality is never an accident.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section class="mb-16 fade-in-up delay-400">
+          <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+            <span class="text-cyan font-mono text-2xl">//</span>
+            <span>04. Who We Serve</span>
+          </h2>
+          <div class="space-y-4 text-zinc-300 leading-relaxed text-lg">
+            <p>We work with:</p>
+            <ul class="space-y-3 font-mono text-base">
+              <li class="terminal-line">Startups scaling from 10 to 10,000 users</li>
+              <li class="terminal-line">Enterprises migrating to cloud-native architectures</li>
+              <li class="terminal-line">Security teams implementing zero-trust models</li>
+              <li class="terminal-line">Developers who need apparel as technical as their code</li>
+              <li class="terminal-line">Anyone who refuses to accept "good enough"</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section class="mb-16 fade-in-up delay-400">
+          <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
+            <span class="text-neon font-mono text-2xl">//</span>
+            <span>05. Where We're Going</span>
+          </h2>
+          <div class="space-y-4 text-zinc-300 leading-relaxed text-lg">
+            <p>
+              This is just the beginning. We're building a company that will exist for decades, 
+              not quarters. Our roadmap includes:
+            </p>
+            <ul class="space-y-2 text-zinc-400">
+              <li>→ Expanding our security services to cover emerging threats (quantum, AI, IoT)</li>
+              <li>→ Launching our first apparel collection in Q2 2025</li>
+              <li>→ Open-sourcing security tools that protect millions</li>
+              <li>→ Building a global community of builders, breakers, and creators</li>
+              <li>→ Staying independent, sustainable, and true to our values</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Closing -->
+        <section class="mb-16 fade-in-up delay-400">
+          <div class="border border-zinc-800/50 rounded-2xl p-8 bg-gradient-to-br from-zinc-900/40 to-transparent">
+            <p class="text-2xl font-bold mb-4 text-white">
+              If this resonates with you, we should talk.
+            </p>
+            <p class="text-zinc-400 mb-6">
+              Whether you need security consulting, want to join our studio waitlist, 
+              or just want to connect with like-minded builders—reach out.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a href="mailto:hello@zgrn.com" class="px-6 py-3 bg-white text-black font-mono font-bold rounded-lg hover:bg-zinc-200 transition-colors">
+                hello@zgrn.com
+              </a>
+              <a href="../cyber/" class="px-6 py-3 border border-neon text-neon font-mono rounded-lg hover:bg-neon/10 transition-colors">
+                Explore CYBER
+              </a>
+              <a href="../studio/" class="px-6 py-3 border border-cyan text-cyan font-mono rounded-lg hover:bg-cyan/10 transition-colors">
+                Explore STUDIO
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sign-off -->
+        <section class="fade-in-up delay-400">
+          <div class="font-mono text-sm text-zinc-500 space-y-1">
+            <p>— The ZGRN Team</p>
+            <p>Taipei / Hong Kong</p>
+            <p>Version 1.0.0 • January 2025</p>
+          </div>
+        </section>
+      </article>
+
+      <!-- Footer -->
+      <footer class="mt-20 border-t border-zinc-900/80 pt-8 pb-4 fade-in">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <div class="font-bold mb-3 text-white">ZGRN</div>
+            <p class="text-xs text-zinc-500 leading-relaxed">
+              Control the chaos. Enterprise security and cyberpunk design.
+            </p>
+          </div>
+          
+          <div>
+            <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Domains</div>
+            <div class="space-y-2 text-sm">
+              <a href="../" class="block text-zinc-400 hover:text-white transition-colors">HOME</a>
+              <a href="../cyber/" class="block text-zinc-400 hover:text-neon transition-colors">CYBER</a>
+              <a href="../studio/" class="block text-zinc-400 hover:text-cyan transition-colors">STUDIO</a>
+              <a href="../core/" class="block text-white hover:text-zinc-300 transition-colors">CORE</a>
+            </div>
+          </div>
+          
+          <div>
+            <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Contact</div>
+            <div class="space-y-2 text-sm">
+              <a href="mailto:cyber@zgrn.com" class="block text-zinc-400 hover:text-neon transition-colors">cyber@zgrn.com</a>
+              <a href="mailto:studio@zgrn.com" class="block text-zinc-400 hover:text-cyan transition-colors">studio@zgrn.com</a>
+              <a href="mailto:hello@zgrn.com" class="block text-zinc-400 hover:text-white transition-colors">hello@zgrn.com</a>
+            </div>
+          </div>
+          
+          <div>
+            <div class="font-mono text-xs text-zinc-600 mb-3 uppercase tracking-wider">Connect</div>
+            <div class="space-y-2 text-sm">
+              <a href="https://github.com/zgrnteam" class="block text-zinc-400 hover:text-white transition-colors">GitHub</a>
+              <a href="https://twitter.com/zgrnteam" class="block text-zinc-400 hover:text-white transition-colors">Twitter/X</a>
+              <a href="https://instagram.com/zgrnstudio" class="block text-zinc-400 hover:text-white transition-colors">Instagram</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-6 border-t border-zinc-900/50 text-xs font-mono text-zinc-500">
+          <div>© ZGRN 2025 · All rights reserved</div>
+          <div class="flex items-center gap-2">
+            <span class="text-zinc-700">📍</span>
+            <span>TAIPEI / HONG KONG</span>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
+
